@@ -4,7 +4,7 @@ import time
 from datetime import datetime
 
 # ================== CONFIG ==================
-SERIAL_PORT = 'COM5'        # Change if needed
+SERIAL_PORT = 'COM5'      
 BAUD_RATE = 115200
 CSV_FILE = 'sensor_data.csv'
 # ============================================

@@ -1,10 +1,11 @@
 import time
 import random
 import pyttsx3
+import csv
+import os
+from datetime import datetime
 
-# -------------------------------------------------
-# SAFE TEXT-TO-SPEECH (reinitialized every call)
-# -------------------------------------------------
+
 def speak(text):
     print("[VOICE]:", text)
     engine = pyttsx3.init()
@@ -17,186 +18,187 @@ def speak(text):
 
 
 def clear_screen():
-    print("\n" * 50)
+    print("\n"*40)
 
 
-# -------------------------------------------------
-# 1. WORD RECALL TEST
-# -------------------------------------------------
+# ---------------- SAVE MEMORY RESULTS ----------------
+def save_memory(word=None, number=None, stroop_rt=None, stroop_acc=None):
+
+    filename = "memory_results.csv"
+    file_exists = os.path.isfile(filename)
+
+    with open(filename, "a", newline="") as f:
+
+        writer = csv.writer(f)
+
+        if not file_exists:
+            writer.writerow([
+                "timestamp",
+                "word_recall_score",
+                "number_recall_score",
+                "stroop_reaction_ms",
+                "stroop_accuracy_percent"
+            ])
+
+        writer.writerow([
+            datetime.now(),
+            word,
+            number,
+            stroop_rt,
+            stroop_acc
+        ])
+
+
+# ---------------- WORD RECALL ----------------
 def word_recall_test():
-    speak("Word recall test selected.")
-    speak("You will first do one practice trial, followed by three recorded trials.")
 
-    word_bank = ["apple", "chair", "river", "house", "book", "green", "clock", "phone"]
+    word_bank = ["apple","chair","river","house","book","green","clock","phone"]
 
-    # ---------- PRACTICE ----------
-    speak("Practice trial. Memorize the words.")
-    practice_words = random.sample(word_bank, 4)
-    print("Words:", " ".join(practice_words))
+    speak("Word recall test.")
+
+    practice = random.sample(word_bank,4)
+    print("Words:",practice)
 
     time.sleep(5)
     clear_screen()
-    input("Enter recalled words: ")
+    input("Recall words: ")
 
-    speak("Practice completed. Recorded trials will start now.")
-
-    # ---------- RECORDED ----------
-    scores = []
+    scores=[]
 
     for i in range(3):
-        speak(f"Trial {i + 1}. Memorize the words.")
-        words = random.sample(word_bank, 5)
-        print("Words:", " ".join(words))
+
+        words=random.sample(word_bank,5)
+        print("Words:",words)
 
         time.sleep(6)
         clear_screen()
 
-        recall = input("Enter recalled words: ").lower().split()
-        correct = len(set(recall) & set(words))
+        recall=input("Recall words: ").lower().split()
+
+        correct=len(set(recall)&set(words))
         scores.append(correct)
 
-        speak(f"You recalled {correct} words correctly.")
+        speak(f"You recalled {correct} words.")
 
-    avg_score = round(sum(scores) / len(scores), 2)
-    speak(f"Your average word recall score is {avg_score} out of five.")
+    avg_score=round(sum(scores)/len(scores),2)
+
+    save_memory(word=avg_score)
+
+    speak(f"Average word recall {avg_score} out of five.")
 
     return avg_score
 
 
-# -------------------------------------------------
-# 2. NUMBER SEQUENCE RECALL
-# -------------------------------------------------
+# ---------------- NUMBER RECALL ----------------
 def number_sequence_test():
-    speak("Number sequence recall test selected.")
-    speak("You will first do one practice trial, followed by three recorded trials.")
 
-    # ---------- PRACTICE ----------
-    speak("Practice trial. Memorize the numbers.")
-    practice_seq = [random.randint(0, 9) for _ in range(4)]
-    print("Sequence:", " ".join(map(str, practice_seq)))
+    speak("Number recall test.")
+
+    practice=[random.randint(0,9) for _ in range(4)]
+    print("Sequence:",practice)
 
     time.sleep(4)
     clear_screen()
     input("Enter sequence: ")
 
-    speak("Practice completed. Recorded trials will start now.")
-
-    # ---------- RECORDED ----------
-    scores = []
+    scores=[]
 
     for i in range(3):
-        speak(f"Trial {i + 1}. Memorize the numbers.")
-        sequence = [random.randint(0, 9) for _ in range(6)]
-        print("Sequence:", " ".join(map(str, sequence)))
+
+        sequence=[random.randint(0,9) for _ in range(6)]
+        print("Sequence:",sequence)
 
         time.sleep(5)
         clear_screen()
 
-        response = input("Enter sequence: ").split()
-        correct = sum(
-            1 for j in range(min(len(sequence), len(response)))
-            if response[j] == str(sequence[j])
-        )
+        response=input("Enter sequence: ").split()
+
+        correct=sum(1 for j in range(min(len(sequence),len(response)))
+        if response[j]==str(sequence[j]))
 
         scores.append(correct)
-        speak(f"You recalled {correct} numbers correctly.")
 
-    avg_score = round(sum(scores) / len(scores), 2)
-    speak(f"Your average number recall score is {avg_score} out of six.")
+        speak(f"You recalled {correct} numbers.")
+
+    avg_score=round(sum(scores)/len(scores),2)
+
+    save_memory(number=avg_score)
+
+    speak(f"Average number recall {avg_score}.")
 
     return avg_score
 
 
-# -------------------------------------------------
-# 3. STROOP TEST
-# -------------------------------------------------
+# ---------------- STROOP TEST ----------------
 def stroop_test():
-    speak("Stroop test selected.")
-    speak("Type the color of the word, not the word itself.")
-    speak("You will first do one practice trial, followed by three recorded trials.")
 
-    colors = ["RED", "GREEN", "BLUE", "YELLOW"]
+    colors=["RED","GREEN","BLUE","YELLOW"]
 
-    # ---------- PRACTICE ----------
-    speak("Practice trial.")
-    word = random.choice(colors)
-    color = random.choice(colors)
-    print(f"Word: {word} (Color shown: {color})")
+    speak("Stroop test. Type the color of the word.")
 
-    time.sleep(3)
-    clear_screen()
-    input("Enter the COLOR: ")
-
-    speak("Practice completed. Recorded trials will start now.")
-
-    # ---------- RECORDED ----------
-    correct_scores = []
-    reaction_times = []
+    correct_scores=[]
+    reaction_times=[]
 
     for i in range(3):
-        speak(f"Trial {i + 1}.")
-        word = random.choice(colors)
-        color = random.choice(colors)
-        print(f"Word: {word} (Color shown: {color})")
+
+        word=random.choice(colors)
+        color=random.choice(colors)
+
+        print(f"Word:{word} Color:{color}")
 
         time.sleep(2)
         clear_screen()
 
-        start = time.time()
-        response = input("Enter the COLOR: ").strip().upper()
-        end = time.time()
+        start=time.time()
+        response=input("Enter color: ").upper()
+        end=time.time()
 
-        rt = round((end - start) * 1000, 2)
+        rt=round((end-start)*1000,2)
+
         reaction_times.append(rt)
 
-        correct = 1 if response == color else 0
+        correct=1 if response==color else 0
         correct_scores.append(correct)
 
         speak(f"Reaction time {rt} milliseconds.")
 
-    avg_rt = round(sum(reaction_times) / len(reaction_times), 2)
-    accuracy = round((sum(correct_scores) / 3) * 100, 2)
+    avg_rt=round(sum(reaction_times)/3,2)
+    accuracy=round((sum(correct_scores)/3)*100,2)
 
-    speak(f"Your average response time is {avg_rt} milliseconds.")
-    speak(f"Your accuracy is {accuracy} percent.")
+    save_memory(stroop_rt=avg_rt,stroop_acc=accuracy)
 
-    return avg_rt, accuracy
+    speak(f"Average reaction time {avg_rt} milliseconds.")
+    speak(f"Accuracy {accuracy} percent.")
+
+    return avg_rt,accuracy
 
 
-# -------------------------------------------------
-# MAIN MENU (VOICE + TEXT)
-# -------------------------------------------------
+# ---------------- MENU ----------------
 def main():
+
     speak("Memory test module started.")
 
     while True:
-        speak("Please choose a memory test.")
-        speak("Press one for word recall.")
-        speak("Press two for number sequence recall.")
-        speak("Press three for Stroop test.")
-        speak("Press four to exit.")
 
-        print("\nChoose a test:")
-        print("1. Word Recall Test")
-        print("2. Number Sequence Recall")
-        print("3. Stroop Test")
-        print("4. Exit")
+        print("\n1.Word Recall")
+        print("2.Number Recall")
+        print("3.Stroop Test")
+        print("4.Exit")
 
-        choice = input("Enter your choice: ").strip()
-        speak(f"You selected option {choice}.")
+        choice=input("Enter choice:")
 
-        if choice == "1":
+        if choice=="1":
             word_recall_test()
-        elif choice == "2":
+
+        elif choice=="2":
             number_sequence_test()
-        elif choice == "3":
+
+        elif choice=="3":
             stroop_test()
-        elif choice == "4":
-            speak("Exiting memory test module. Thank you.")
+
+        elif choice=="4":
             break
-        else:
-            speak("Invalid choice. Please try again.")
 
 
-if __name__ == "__main__":
+if __name__=="__main__":
     main()
