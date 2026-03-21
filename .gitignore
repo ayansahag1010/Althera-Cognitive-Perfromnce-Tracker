@@ -1,3 +1,5 @@
 __pycache__/
+*.pyc
+.venv/
 *.pkl
-*.csv
+tempCodeRunnerFile.py
