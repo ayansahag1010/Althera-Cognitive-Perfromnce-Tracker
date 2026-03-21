@@ -1,54 +1,135 @@
-# 🧠 Althera — Multimodal Cognitive Health Monitoring System
+<div align="center">
 
-**Althera** is an AI-powered cognitive health monitoring platform designed for early detection of cognitive decline and Alzheimer's indicators. It integrates real-time physiological sensors, interactive cognitive tests, facial emotion detection, machine learning prediction, and generative AI interpretation — all within a unified Streamlit dashboard.
+# 🧠 Althera — Cognitive Performance Tracker
 
----
+### AI-Powered Multimodal Cognitive Health Monitoring System
 
-## ✨ Features
+[![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io)
+[![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org)
+[![OpenCV](https://img.shields.io/badge/OpenCV-Vision-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)](https://opencv.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
-| Module | Description |
-|---|---|
-| **Hardware Sensor Integration** | Real-time heart rate, SpO2, and motion data via ESP8266 + MAX30102 + MPU6050 |
-| **Reaction Tests** | Simple reaction time, choice reaction, and finger tapping assessments |
-| **Memory Tests** | Word recall, number recall, and Stroop test for cognitive evaluation |
-| **Emotion Detection** | Webcam-based facial emotion analysis using OpenCV Haar Cascades |
-| **ML Prediction** | Random Forest model predicts a cognitive health score from multimodal data |
-| **AI Interpretation** | Generative AI report via Ollama (LLaMA 3.2) with health summary and recommendations |
-| **Interactive Dashboard** | 8-step guided workflow with dark-themed Streamlit UI and Plotly visualizations |
+*A real-time cognitive health monitoring platform designed for early detection of cognitive decline and Alzheimer's indicators through multimodal data fusion, machine learning, and generative AI.*
 
 ---
 
-## 🏗️ Project Structure
+</div>
+
+## 📋 Table of Contents
+
+- [Overview](#-overview)
+- [Key Features](#-key-features)
+- [System Architecture](#-system-architecture)
+- [Project Structure](#-project-structure)
+- [Getting Started](#-getting-started)
+- [Dashboard Workflow](#-dashboard-workflow)
+- [Machine Learning Pipeline](#-machine-learning-pipeline)
+- [Model Comparison](#-model-comparison)
+- [Tech Stack](#-tech-stack)
+- [Authors](#-authors)
+- [License](#-license)
+
+---
+
+## 🔍 Overview
+
+**Althera** integrates five data modalities to produce a comprehensive cognitive health assessment:
+
+| Modality | Source | Metrics |
+|:---|:---|:---|
+| **Physiological** | ESP8266 + MAX30102 + MPU6050 | Heart Rate, SpO2, Motion |
+| **Motor Function** | Interactive Tests | Reaction Time, Finger Tapping Speed |
+| **Memory** | Interactive Tests | Word Recall, Number Recall |
+| **Executive Function** | Stroop Test | Accuracy, Response Time |
+| **Emotional State** | Webcam + OpenCV | Facial Emotion Classification |
+
+All data flows into a **Random Forest** regression model that outputs a **Cognitive Health Score (0–100)**, followed by a **Generative AI interpretation** powered by Ollama (LLaMA 3.2).
+
+---
+
+## ✨ Key Features
+
+- 🔗 **Real-Time Sensor Integration** — Live heart rate, SpO2, and motion data via ESP8266 serial connection
+- ⚡ **Reaction Time Assessment** — Simple reaction, choice reaction, and finger tapping tests
+- 🧩 **Memory & Cognitive Tests** — Word recall, number recall, and Stroop interference test
+- 😊 **Facial Emotion Detection** — Webcam-based emotion analysis using OpenCV Haar Cascades
+- 🤖 **ML Cognitive Scoring** — Random Forest model trained on 9 multimodal features
+- 🧬 **AI-Generated Reports** — Detailed health interpretation via Ollama (LLaMA 3.2)
+- 📊 **Interactive Dashboard** — 8-step guided Streamlit workflow with Plotly visualizations
+- 🔊 **Voice Feedback** — Text-to-speech cognitive score announcement
+- 📡 **Simulated Mode** — Full testing capability without physical hardware
+
+---
+
+## 🏗️ System Architecture
 
 ```
-Althera-Minor-Project/
-├── dashboard_app.py          # Main Streamlit dashboard (entry point)
-├── dashboard_bridge.py       # Bridge module connecting dashboard to backend modules
-├── dashboard_helpers.py      # Helper functions for the dashboard
-├── dashboard_styles.py       # CSS styles and Plotly theme for the dashboard
-├── dashboard.py              # Dashboard launcher
+┌─────────────────────────────────────────────────────────────────┐
+│                    ALTHERA DASHBOARD (Streamlit)                 │
+├─────────────┬─────────────┬──────────────┬─────────────────────┤
+│  Sensor     │  Cognitive   │   Emotion    │   Results &         │
+│  Panel      │  Tests       │   Detection  │   Visualization     │
+├─────────────┴─────────────┴──────────────┴─────────────────────┤
+│                     BRIDGE LAYER (dashboard_bridge.py)           │
+├─────────────┬─────────────┬──────────────┬─────────────────────┤
+│ serial_     │ reaction_   │ emotion_     │ ai_                 │
+│ reader.py   │ Test.py     │ detection.py │ interpretation.py   │
+├─────────────┴─────────────┴──────────────┴─────────────────────┤
+│                     ML PIPELINE                                  │
+│          train_model.py → cognitive_model.pkl → predict_score.py │
+├──────────────────────────────────────────────────────────────────┤
+│                     DATA LAYER                                   │
+│    sensor_data.csv + reaction_results.csv + memory_results.csv   │
+│                    → combined_data.csv                           │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 📁 Project Structure
+
+```
+Althera-Cognitive-Perfromnce-Tracker/
 │
-├── serial_reader.py          # Reads live sensor data from ESP8266 via serial port
-├── import serial.py          # Alternate serial communication script
+├── dashboard_app.py            # Main Streamlit dashboard (entry point)
+├── dashboard_bridge.py         # Bridge connecting dashboard to backend modules
+├── dashboard_helpers.py        # Utility functions for the dashboard
+├── dashboard_styles.py         # CSS styles & Plotly dark theme
+├── dashboard.py                # Dashboard launcher script
 │
-├── reaction_Test.py          # Standalone reaction time tests (terminal-based)
-├── memory_Test.py            # Standalone memory and Stroop tests (terminal-based)
+├── serial_reader.py            # Reads live sensor data from ESP8266 via serial
+├── import serial.py            # Alternate serial communication script
 │
-├── emotion_detection.py      # Webcam-based emotion detection using OpenCV
+├── reaction_Test.py            # Terminal-based reaction time tests
+├── memory_Test.py              # Terminal-based memory & Stroop tests
+├── emotion_detection.py        # Webcam emotion detection using OpenCV
 │
-├── train_model.py            # Trains Random Forest model on combined data
-├── predict_score.py          # Predicts cognitive score using the trained model
-├── model_comparison.py       # Compares ML models (Random Forest, SVR, etc.)
+├── train_model.py              # Trains Random Forest on combined data
+├── predict_score.py            # Predicts cognitive score with voice feedback
+├── model_comparison.py         # Compares ML models (RF, SVR, GB, etc.)
 │
-├── merge_data.py             # Merges sensor + test data into combined_data.csv
-├── save_results.py           # Saves test results to CSV files
-├── ai_interpretation.py      # Sends data to Ollama LLM for cognitive analysis
+├── merge_data.py               # Merges sensor + test data into combined CSV
+├── save_results.py             # Saves test results to CSV
+├── ai_interpretation.py        # Sends data to Ollama LLM for analysis
 │
-├── generate_ieee_graph.py    # Generates IEEE-format publication graphs
-├── generate_ieee_graphs.py   # Extended IEEE graph generation script
+├── generate_ieee_graph.py      # Generates IEEE-format publication graphs
+├── generate_ieee_graphs.py     # Extended IEEE graph generation
 │
-├── requirements.txt          # Python dependencies
-└── .gitignore                # Git ignore rules
+├── combined_data.csv           # Merged multimodal dataset
+├── sensor_data.csv             # Raw sensor readings
+├── reaction_results.csv        # Reaction test results
+├── memory_results.csv          # Memory test results
+│
+├── model_comparison_ieee.png   # IEEE-format model comparison chart
+├── r2_comparison_ieee.png      # R² score comparison chart
+├── rmse_comparison_ieee.png    # RMSE comparison chart
+├── model_r2_comparison.png     # R² comparison visualization
+├── model_rmse_comparison.png   # RMSE comparison visualization
+│
+├── requirements.txt            # Python dependencies
+├── LICENSE                     # MIT License
+└── .gitignore                  # Git ignore rules
 ```
 
 ---
@@ -57,114 +138,125 @@ Althera-Minor-Project/
 
 ### Prerequisites
 
-- **Python 3.8+**
-- **Hardware (optional):** ESP8266 + MAX30102 (heart rate/SpO2) + MPU6050 (accelerometer)
-- **Ollama** (for AI interpretation) — [Install Ollama](https://ollama.com)
+| Requirement | Purpose |
+|:---|:---|
+| Python 3.8+ | Runtime |
+| ESP8266 + MAX30102 + MPU6050 | Hardware sensors *(optional — simulated mode available)* |
+| Ollama | Generative AI reports — [Install Ollama](https://ollama.com) |
+| Webcam | Facial emotion detection |
 
 ### Installation
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/ayansahag1010/Althera-Minor-Project.git
-   cd Althera-Minor-Project
-   ```
+```bash
+# Clone the repository
+git clone https://github.com/ayansahag1010/Althera-Cognitive-Perfromnce-Tracker.git
+cd Althera-Cognitive-Perfromnce-Tracker
 
-2. **Create a virtual environment**
-   ```bash
-   python -m venv .venv
-   .venv\Scripts\activate    # Windows
-   # source .venv/bin/activate  # macOS/Linux
-   ```
+# Create virtual environment
+python -m venv .venv
+.venv\Scripts\activate          # Windows
+# source .venv/bin/activate     # macOS / Linux
 
-3. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   pip install streamlit plotly
-   ```
+# Install dependencies
+pip install -r requirements.txt
+pip install streamlit plotly numpy
 
-4. **Pull the LLaMA model (for AI reports)**
-   ```bash
-   ollama pull llama3.2
-   ```
+# Pull the LLaMA model (for AI reports)
+ollama pull llama3.2
+```
 
-### Running the Dashboard
+### Run the Dashboard
 
 ```bash
 streamlit run dashboard_app.py
 ```
 
-The dashboard guides you through an **8-step workflow**:
+---
 
-1. 🔗 Connect Sensor (or use simulated data)
-2. 📡 Collect Sensor Data
-3. ⚡ Reaction Tests
-4. 🧩 Memory & Cognitive Tests
-5. 😊 Facial Emotion Detection
-6. 🤖 ML Cognitive Score Prediction
-7. 🧬 AI Interpretation Report
-8. 📊 Final Results Dashboard
+## 🖥️ Dashboard Workflow
+
+The dashboard guides you through an **8-step cognitive assessment pipeline**:
+
+| Step | Module | Description |
+|:---:|:---|:---|
+| 1 | 🔗 Connect Sensor | Connect ESP8266 hardware or activate simulated data |
+| 2 | 📡 Collect Data | Stream real-time heart rate, SpO2, and motion data |
+| 3 | ⚡ Reaction Tests | Simple reaction, choice reaction, and finger tapping |
+| 4 | 🧩 Memory Tests | Word recall, number recall, and Stroop test |
+| 5 | 😊 Emotion Detection | Webcam-based facial emotion analysis |
+| 6 | 🤖 ML Prediction | Random Forest cognitive score prediction |
+| 7 | 🧬 AI Interpretation | LLaMA 3.2 generates detailed health report |
+| 8 | 📊 Final Results | Comprehensive dashboard with score, gauges, and charts |
 
 ---
 
-## 🔬 How It Works
+## 🤖 Machine Learning Pipeline
 
-### Data Collection
-- **Physiological data** (heart rate, SpO2, motion) is collected via an ESP8266 microcontroller connected to MAX30102 and MPU6050 sensors
-- **Cognitive tests** measure reaction time, memory recall, and executive function (Stroop test)
-- **Emotion detection** uses OpenCV face detection to analyze facial expressions via webcam
+### Feature Set (9 Multimodal Features)
 
-### ML Prediction
-A **Random Forest Regressor** is trained on 9 multimodal features:
-- Heart Rate, SpO2, Motion Level
-- Simple Reaction Time, Choice Reaction Time, Finger Taps
-- Word Recall Score, Number Recall Score, Stroop Accuracy
+```
+Physiological:  Heart Rate  |  SpO2  |  Motion Level
+Motor Function: Simple Reaction Time  |  Choice Reaction Time  |  Finger Taps
+Memory:         Word Recall Score  |  Number Recall Score
+Executive:      Stroop Accuracy (%)
+```
 
-The model outputs a **Cognitive Health Score (0–100)** with status classification:
-| Score Range | Status |
-|---|---|
-| > 85 | Excellent cognitive performance |
-| 70 – 85 | Normal cognitive performance |
-| 50 – 70 | Mild cognitive fatigue |
-| < 50 | Low cognitive performance |
+### Cognitive Score Formula
 
-### AI Interpretation
-Collected data is sent to **Ollama (LLaMA 3.2)** which generates a detailed report including:
-- Cognitive health summary
-- Possible concerns
-- Suggestions for improvement
+```python
+CognitiveScore = 100 - (simple_reaction_ms × 0.05) + (word_recall_score × 5) + (stroop_accuracy × 0.2)
+```
+
+### Score Interpretation
+
+| Score | Status | Indicator |
+|:---:|:---|:---|
+| **> 85** | 🟢 Excellent | Healthy cognitive performance |
+| **70 – 85** | 🔵 Normal | Within expected range |
+| **50 – 70** | 🟡 Mild Fatigue | Early signs of cognitive fatigue |
+| **< 50** | 🔴 Low | Potential cognitive decline indicator |
 
 ---
 
 ## 📊 Model Comparison
 
-Multiple regression models were evaluated for cognitive score prediction:
+Multiple regression models were evaluated for cognitive score prediction accuracy:
 
-| Model | R² Score | RMSE |
-|---|---|---|
-| Random Forest | Best | Lowest |
-| Support Vector Regression | — | — |
-| Gradient Boosting | — | — |
+- **Random Forest Regressor** *(selected)*
+- Support Vector Regression (SVR)
+- Gradient Boosting Regressor
+- Linear Regression
+- K-Nearest Neighbors
 
-IEEE-formatted comparison graphs are available in the project root.
+IEEE-formatted comparison charts are included in the repository:
+
+| Chart | File |
+|:---|:---|
+| Combined Model Comparison | `model_comparison_ieee.png` |
+| R² Score Comparison | `r2_comparison_ieee.png` |
+| RMSE Comparison | `rmse_comparison_ieee.png` |
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Language:** Python
-- **Dashboard:** Streamlit + Plotly
-- **ML:** scikit-learn (Random Forest, SVR, Gradient Boosting)
-- **Computer Vision:** OpenCV (Haar Cascades)
-- **AI/LLM:** Ollama (LLaMA 3.2)
-- **Hardware:** ESP8266 + MAX30102 + MPU6050
-- **Voice:** pyttsx3 (text-to-speech feedback)
-- **Serial:** pyserial (sensor communication)
+| Category | Technology |
+|:---|:---|
+| **Language** | Python 3.8+ |
+| **Dashboard** | Streamlit, Plotly |
+| **Machine Learning** | scikit-learn (Random Forest, SVR, Gradient Boosting) |
+| **Computer Vision** | OpenCV (Haar Cascade Classifiers) |
+| **Generative AI** | Ollama (LLaMA 3.2) |
+| **Hardware** | ESP8266, MAX30102 (Heart Rate/SpO2), MPU6050 (Accelerometer) |
+| **Voice Output** | pyttsx3 |
+| **Serial Comm** | pyserial |
+| **Data Processing** | pandas, NumPy |
 
 ---
 
 ## 📋 Dependencies
 
-```
+```txt
 pandas
 opencv-python
 pyserial
@@ -181,10 +273,18 @@ numpy
 
 ## 👥 Authors
 
-- **Ayan Saha** — [GitHub](https://github.com/ayansahag1010)
+**Ayan Saha** — [@ayansahag1010](https://github.com/ayansahag1010)
 
 ---
 
 ## 📄 License
 
-This project is part of a Minor Project submission. All rights reserved.
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+---
+
+<div align="center">
+
+*Built with ❤️ as a Minor Project*
+
+</div>
