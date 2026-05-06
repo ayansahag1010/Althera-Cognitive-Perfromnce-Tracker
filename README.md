@@ -274,7 +274,7 @@ numpy
 ## 👥 Authors
 
 **G. Ayan Kumar Saha** — [@ayansahag1010](https://github.com/ayansahag1010)
-**Ahaan Sethi** — [@RuntimeTerror001](https://github.com/RuntimeTerror001)
+**Aahaan Sethi** — [@RuntimeTerror001](https://github.com/RuntimeTerror001)
 
 ---
 
