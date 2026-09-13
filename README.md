@@ -12,21 +12,22 @@
 
 *A real-time cognitive health monitoring platform designed for early detection of cognitive decline and Alzheimer's indicators through multimodal data fusion, machine learning, and generative AI.*
 
----
-
 </div>
+
+---
 
 ## 📋 Table of Contents
 
 - [Overview](#-overview)
 - [Key Features](#-key-features)
-- [System Architecture](#-system-architecture)
+- [System Architecture](#️-system-architecture)
 - [Project Structure](#-project-structure)
 - [Getting Started](#-getting-started)
-- [Dashboard Workflow](#-dashboard-workflow)
+- [Dashboard Workflow](#️-dashboard-workflow)
 - [Machine Learning Pipeline](#-machine-learning-pipeline)
 - [Model Comparison](#-model-comparison)
-- [Tech Stack](#-tech-stack)
+- [Tech Stack](#️-tech-stack)
+- [Dependencies](#-dependencies)
 - [Authors](#-authors)
 - [License](#-license)
 
@@ -37,7 +38,7 @@
 **Althera** integrates five data modalities to produce a comprehensive cognitive health assessment:
 
 | Modality | Source | Metrics |
-|:---|:---|:---|
+| :--- | :--- | :--- |
 | **Physiological** | ESP8266 + MAX30102 + MPU6050 | Heart Rate, SpO2, Motion |
 | **Motor Function** | Interactive Tests | Reaction Time, Finger Tapping Speed |
 | **Memory** | Interactive Tests | Word Recall, Number Recall |
@@ -68,8 +69,8 @@ All data flows into a **Random Forest** regression model that outputs a **Cognit
 ┌─────────────────────────────────────────────────────────────────┐
 │                    ALTHERA DASHBOARD (Streamlit)                 │
 ├─────────────┬─────────────┬──────────────┬─────────────────────┤
-│  Sensor     │  Cognitive   │   Emotion    │   Results &         │
-│  Panel      │  Tests       │   Detection  │   Visualization     │
+│  Sensor     │  Cognitive  │   Emotion    │   Results &         │
+│  Panel      │  Tests      │   Detection  │   Visualization     │
 ├─────────────┴─────────────┴──────────────┴─────────────────────┤
 │                     BRIDGE LAYER (dashboard_bridge.py)           │
 ├─────────────┬─────────────┬──────────────┬─────────────────────┤
@@ -78,11 +79,11 @@ All data flows into a **Random Forest** regression model that outputs a **Cognit
 ├─────────────┴─────────────┴──────────────┴─────────────────────┤
 │                     ML PIPELINE                                  │
 │          train_model.py → cognitive_model.pkl → predict_score.py │
-├──────────────────────────────────────────────────────────────────┤
+├───────────────────────────────────────────────────────────────────┤
 │                     DATA LAYER                                   │
 │    sensor_data.csv + reaction_results.csv + memory_results.csv   │
 │                    → combined_data.csv                           │
-└──────────────────────────────────────────────────────────────────┘
+└───────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -90,46 +91,45 @@ All data flows into a **Random Forest** regression model that outputs a **Cognit
 ## 📁 Project Structure
 
 ```
-Althera-Cognitive-Perfromnce-Tracker/
+Althera-Cognitive-Performance-Tracker/
 │
-├── dashboard_app.py            # Main Streamlit dashboard (entry point)
-├── dashboard_bridge.py         # Bridge connecting dashboard to backend modules
-├── dashboard_helpers.py        # Utility functions for the dashboard
-├── dashboard_styles.py         # CSS styles & Plotly dark theme
+├── dashboard_app.py           # Main Streamlit dashboard (entry point)
+├── dashboard_bridge.py        # Bridge connecting dashboard to backend modules
+├── dashboard_helpers.py       # Utility functions for the dashboard
+├── dashboard_styles.py        # CSS styles & Plotly dark theme
 ├── dashboard.py                # Dashboard launcher script
 │
-├── serial_reader.py            # Reads live sensor data from ESP8266 via serial
-├── import serial.py            # Alternate serial communication script
+├── serial_reader.py           # Reads live sensor data from ESP8266 via serial
 │
-├── reaction_Test.py            # Terminal-based reaction time tests
-├── memory_Test.py              # Terminal-based memory & Stroop tests
-├── emotion_detection.py        # Webcam emotion detection using OpenCV
+├── reaction_Test.py           # Terminal-based reaction time tests
+├── memory_Test.py             # Terminal-based memory & Stroop tests
+├── emotion_detection.py       # Webcam emotion detection using OpenCV
 │
-├── train_model.py              # Trains Random Forest on combined data
-├── predict_score.py            # Predicts cognitive score with voice feedback
-├── model_comparison.py         # Compares ML models (RF, SVR, GB, etc.)
+├── train_model.py             # Trains Random Forest on combined data
+├── predict_score.py           # Predicts cognitive score with voice feedback
+├── model_comparison.py        # Compares ML models (RF, SVR, GB, etc.)
 │
-├── merge_data.py               # Merges sensor + test data into combined CSV
-├── save_results.py             # Saves test results to CSV
-├── ai_interpretation.py        # Sends data to Ollama LLM for analysis
+├── merge_data.py              # Merges sensor + test data into combined CSV
+├── save_results.py            # Saves test results to CSV
+├── ai_interpretation.py       # Sends data to Ollama LLM for analysis
 │
-├── generate_ieee_graph.py      # Generates IEEE-format publication graphs
-├── generate_ieee_graphs.py     # Extended IEEE graph generation
+├── generate_ieee_graph.py     # Generates IEEE-format publication graphs
+├── generate_ieee_graphs.py    # Extended IEEE graph generation
 │
-├── combined_data.csv           # Merged multimodal dataset
-├── sensor_data.csv             # Raw sensor readings
-├── reaction_results.csv        # Reaction test results
-├── memory_results.csv          # Memory test results
+├── combined_data.csv          # Merged multimodal dataset
+├── sensor_data.csv            # Raw sensor readings
+├── reaction_results.csv       # Reaction test results
+├── memory_results.csv         # Memory test results
 │
-├── model_comparison_ieee.png   # IEEE-format model comparison chart
-├── r2_comparison_ieee.png      # R² score comparison chart
-├── rmse_comparison_ieee.png    # RMSE comparison chart
-├── model_r2_comparison.png     # R² comparison visualization
-├── model_rmse_comparison.png   # RMSE comparison visualization
+├── model_comparison_ieee.png  # IEEE-format model comparison chart
+├── r2_comparison_ieee.png     # R² score comparison chart
+├── rmse_comparison_ieee.png   # RMSE comparison chart
+├── model_r2_comparison.png    # R² comparison visualization
+├── model_rmse_comparison.png  # RMSE comparison visualization
 │
-├── requirements.txt            # Python dependencies
-├── LICENSE                     # MIT License
-└── .gitignore                  # Git ignore rules
+├── requirements.txt           # Python dependencies
+├── LICENSE                    # MIT License
+└── .gitignore                 # Git ignore rules
 ```
 
 ---
@@ -139,7 +139,7 @@ Althera-Cognitive-Perfromnce-Tracker/
 ### Prerequisites
 
 | Requirement | Purpose |
-|:---|:---|
+| :--- | :--- |
 | Python 3.8+ | Runtime |
 | ESP8266 + MAX30102 + MPU6050 | Hardware sensors *(optional — simulated mode available)* |
 | Ollama | Generative AI reports — [Install Ollama](https://ollama.com) |
@@ -152,14 +152,13 @@ Althera-Cognitive-Perfromnce-Tracker/
 git clone https://github.com/ayansahag1010/Althera-Cognitive-Perfromnce-Tracker.git
 cd Althera-Cognitive-Perfromnce-Tracker
 
-# Create virtual environment
+# Create a virtual environment
 python -m venv .venv
 .venv\Scripts\activate          # Windows
 # source .venv/bin/activate     # macOS / Linux
 
 # Install dependencies
 pip install -r requirements.txt
-pip install streamlit plotly numpy
 
 # Pull the LLaMA model (for AI reports)
 ollama pull llama3.2
@@ -178,14 +177,14 @@ streamlit run dashboard_app.py
 The dashboard guides you through an **8-step cognitive assessment pipeline**:
 
 | Step | Module | Description |
-|:---:|:---|:---|
+| :---: | :--- | :--- |
 | 1 | 🔗 Connect Sensor | Connect ESP8266 hardware or activate simulated data |
 | 2 | 📡 Collect Data | Stream real-time heart rate, SpO2, and motion data |
 | 3 | ⚡ Reaction Tests | Simple reaction, choice reaction, and finger tapping |
 | 4 | 🧩 Memory Tests | Word recall, number recall, and Stroop test |
 | 5 | 😊 Emotion Detection | Webcam-based facial emotion analysis |
 | 6 | 🤖 ML Prediction | Random Forest cognitive score prediction |
-| 7 | 🧬 AI Interpretation | LLaMA 3.2 generates detailed health report |
+| 7 | 🧬 AI Interpretation | LLaMA 3.2 generates a detailed health report |
 | 8 | 📊 Final Results | Comprehensive dashboard with score, gauges, and charts |
 
 ---
@@ -203,14 +202,14 @@ Executive:      Stroop Accuracy (%)
 
 ### Cognitive Score Formula
 
-```python
+```
 CognitiveScore = 100 - (simple_reaction_ms × 0.05) + (word_recall_score × 5) + (stroop_accuracy × 0.2)
 ```
 
 ### Score Interpretation
 
 | Score | Status | Indicator |
-|:---:|:---|:---|
+| :---: | :--- | :--- |
 | **> 85** | 🟢 Excellent | Healthy cognitive performance |
 | **70 – 85** | 🔵 Normal | Within expected range |
 | **50 – 70** | 🟡 Mild Fatigue | Early signs of cognitive fatigue |
@@ -231,7 +230,7 @@ Multiple regression models were evaluated for cognitive score prediction accurac
 IEEE-formatted comparison charts are included in the repository:
 
 | Chart | File |
-|:---|:---|
+| :--- | :--- |
 | Combined Model Comparison | `model_comparison_ieee.png` |
 | R² Score Comparison | `r2_comparison_ieee.png` |
 | RMSE Comparison | `rmse_comparison_ieee.png` |
@@ -241,7 +240,7 @@ IEEE-formatted comparison charts are included in the repository:
 ## 🛠️ Tech Stack
 
 | Category | Technology |
-|:---|:---|
+| :--- | :--- |
 | **Language** | Python 3.8+ |
 | **Dashboard** | Streamlit, Plotly |
 | **Machine Learning** | scikit-learn (Random Forest, SVR, Gradient Boosting) |
@@ -273,8 +272,8 @@ numpy
 
 ## 👥 Authors
 
-**G. Ayan Kumar Saha** — [@ayansahag1010](https://github.com/ayansahag1010)
-**Aahaan Sethi** — [@RuntimeTerror001](https://github.com/RuntimeTerror001)
+- **G. Ayan Kumar Saha** — [@ayansahag1010](https://github.com/ayansahag1010)
+- **Aahaan Sethi** — [@RuntimeTerror001](https://github.com/RuntimeTerror001)
 
 ---
 
