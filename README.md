@@ -66,24 +66,24 @@ All data flows into a **Random Forest** regression model that outputs a **Cognit
 ## 🏗️ System Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                    ALTHERA DASHBOARD (Streamlit)                 │
-├─────────────┬─────────────┬──────────────┬─────────────────────┤
-│  Sensor     │  Cognitive  │   Emotion    │   Results &         │
-│  Panel      │  Tests      │   Detection  │   Visualization     │
-├─────────────┴─────────────┴──────────────┴─────────────────────┤
-│                     BRIDGE LAYER (dashboard_bridge.py)           │
-├─────────────┬─────────────┬──────────────┬─────────────────────┤
-│ serial_     │ reaction_   │ emotion_     │ ai_                 │
-│ reader.py   │ Test.py     │ detection.py │ interpretation.py   │
-├─────────────┴─────────────┴──────────────┴─────────────────────┤
-│                     ML PIPELINE                                  │
-│          train_model.py → cognitive_model.pkl → predict_score.py │
-├───────────────────────────────────────────────────────────────────┤
-│                     DATA LAYER                                   │
-│    sensor_data.csv + reaction_results.csv + memory_results.csv   │
-│                    → combined_data.csv                           │
-└───────────────────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────────────────────────┐
+│                           ALTHERA DASHBOARD (Streamlit)                           │
+├────────────────────┬────────────────────┬────────────────────┬────────────────────┤
+│  Sensor            │  Cognitive         │  Emotion           │  Results &         │
+│  Panel             │  Tests             │  Detection         │  Visualization     │
+├───────────────────────────────────────────────────────────────────────────────────┤
+│                         BRIDGE LAYER (dashboard_bridge.py)                        │
+├────────────────────┬────────────────────┬────────────────────┬────────────────────┤
+│  serial_           │  reaction_         │  emotion_          │  ai_               │
+│  reader.py         │  Test.py           │  detection.py      │  interpretation.py │
+├───────────────────────────────────────────────────────────────────────────────────┤
+│                                    ML PIPELINE                                    │
+│             train_model.py -> cognitive_model.pkl -> predict_score.py             │
+├───────────────────────────────────────────────────────────────────────────────────┤
+│                                     DATA LAYER                                    │
+│            sensor_data.csv + reaction_results.csv + memory_results.csv            │
+│                                -> combined_data.csv                               │
+└───────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
